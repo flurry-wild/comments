@@ -9,7 +9,7 @@ class NewsCommentsController
 {
     public function index(int $newId, CommentsService $commentsService)
     {
-        $comments = $commentsService->getComments();
+        $comments = $commentsService->getComments($newId);
 
         $response = [
             'comments' => $comments,

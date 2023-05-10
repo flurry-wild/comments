@@ -8,9 +8,15 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CommentsService
 {
-    public function getComments()
+    public function getComments($newId)
     {
-        return Comment::query()->whereNull('parent_id')->orderBy('id', 'desc')->limit(10)->get()->toArray();
+        return Comment::query()
+            ->whereNull('parent_id')
+            ->where('new_id', $newId)
+            ->orderBy('id', 'desc')
+            ->limit(10)
+            ->get()
+            ->toArray();
     }
 
     public function getCommentsChildren($comments)
@@ -20,7 +26,15 @@ class CommentsService
             $parentIds[] = $comment['id'];
         }
 
-        $commentsChildren = Comment::query()->whereIn('parent_id', $parentIds)->orderBy('id', 'desc')->get()->toArray();
+        $commentsChildren = [];
+        if (! empty($parentIds)) {
+            $commentsChildren = Comment::query()
+                ->whereIn('parent_id', $parentIds)
+                ->orderBy('id', 'desc')
+                ->get()
+                ->toArray();
+        }
+
         $resultCommentChildren = [];
         foreach ($commentsChildren as $commentChild) {
             $parentId = $commentChild['parent_id'];
