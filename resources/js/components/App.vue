@@ -5,7 +5,7 @@
         title: {class:'font-semibold'}
     }">
         <CommentForm></CommentForm>
-        <Comments></Comments>
+        <Comments :key="$store.state.commentsKey"></Comments>
     </Panel>
 </template>
 <script>

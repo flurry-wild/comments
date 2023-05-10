@@ -31,9 +31,9 @@ export default {
                     parent_id: this.parent_id
                 }
             }).then((response) => {
-                /*if (response.status && response.status == 200 && response.data.id) {
-                    this.addMessages('Мы сохранили ваши данные');
-                }*/
+                if (response.data.status == 'success') {
+                    this.$store.state.commentsKey += 1;
+                }
             })
             .catch((error) => {
                 //this.errors = error.response.data.errors;
