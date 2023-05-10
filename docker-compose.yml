@@ -1,0 +1,61 @@
+version: '3.0'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: my-laravel-app
+    container_name: my-laravel-app-container
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: laravel
+      DB_USERNAME: root
+      DB_PASSWORD: secret
+      XDEBUG_CONFIG: "client_host=host.docker.internal remote_port=9003"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "9090:9090"
+    volumes:
+      - .:/var/www/html
+      - ./docker/config/php/php.ini:/usr/local/etc/php/php.ini
+  db:
+    image: mysql:5.7
+    container_name: my-laravel-db-container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: user
+      MYSQL_PASSWORD: secret
+    volumes:
+      - ./docker/mysql:/var/lib/mysql
+      - ./config/init.db:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: "phpmyadmin"
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: user
+      PMA_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: user
+      MYSQL_USER: user
+      MYSQL_PASSWORD: secret
+      UPLOAD_LIMIT: 512M
+      MEMORY_LIMIT: 512M
+    ports:
+      - "8080:80"
+    volumes:
+      - /sessions
