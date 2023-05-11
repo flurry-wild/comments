@@ -8,6 +8,7 @@ import store from './store';
 import Panel from 'primevue/panel';
 import Editor from 'primevue/editor';
 import Button from 'primevue/button';
+import Paginator from 'primevue/paginator';
 
 import 'primevue/resources/themes/md-light-indigo/theme.css';
 import 'primeicons/primeicons.css';
@@ -20,6 +21,7 @@ const app = createApp(App);
 app.component('Panel', Panel);
 app.component('Editor', Editor);
 app.component('Button', Button);
+app.component('Paginator', Paginator);
 
 app.use(store);
 app.use(PrimeVue);

@@ -8,13 +8,25 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CommentsService
 {
-    public function getComments($newId)
+    const COUNT_RECORDS_ON_PAGE = 2;
+
+    public function getCommentsQuery($newId)
     {
         return Comment::query()
             ->whereNull('parent_id')
             ->where('new_id', $newId)
-            ->orderBy('id', 'desc')
-            ->limit(10)
+            ->orderBy('id', 'desc');
+    }
+
+    public function getComments($newId, $page)
+    {
+        $offset = self::COUNT_RECORDS_ON_PAGE * $page - (self::COUNT_RECORDS_ON_PAGE - 1);
+
+        $commentsQuery = $this->getCommentsQuery($newId)
+            ->limit(self::COUNT_RECORDS_ON_PAGE)
+            ->offset($offset);
+
+        return $commentsQuery
             ->get()
             ->toArray();
     }
@@ -30,7 +42,8 @@ class CommentsService
         if (! empty($parentIds)) {
             $commentsChildren = Comment::query()
                 ->whereIn('parent_id', $parentIds)
-                ->orderBy('id', 'desc')
+                ->orderBy('id', 'asc')
+                ->limit(10)
                 ->get()
                 ->toArray();
         }

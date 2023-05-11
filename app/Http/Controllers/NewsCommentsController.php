@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IndexGetNewsCommentRequest;
 use App\Http\Requests\StorePostNewsCommentRequest;
 use App\Services\CommentsService;
 
 class NewsCommentsController
 {
-    public function index(int $newId, CommentsService $commentsService)
+    public function index(int $newId, IndexGetNewsCommentRequest $request, CommentsService $commentsService)
     {
-        $comments = $commentsService->getComments($newId);
+        $comments = $commentsService->getComments($newId, $request->page);
 
         $response = [
             'comments' => $comments,
+            'totalCount' => $commentsService->getCommentsQuery($newId)->count(),
             'commentsChildren' => $commentsService->getCommentsChildren($comments)
         ];
 
@@ -21,10 +23,7 @@ class NewsCommentsController
 
     public function store(StorePostNewsCommentRequest $request, int $newId, CommentsService $commentsService)
     {
-        $commentText = $request->comment;
-        $parentId = $request->parent_id;
-
-        $comment = $commentsService->createComment($commentText, $parentId, $newId);
+        $comment = $commentsService->createComment($request->comment, $request->parent_id, $newId);
 
         return response()->json([
             'status' => 'success',

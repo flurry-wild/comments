@@ -1,6 +1,6 @@
 <template>
     <div class="p-5 pt-2">
-        <h3 class="pb-5">Обсуждение({{ comments.length }})</h3>
+        <h3 class="pb-5">Обсуждение({{ totalCountComments }})</h3>
         <div v-for="(comment, index) in comments" class="pb-1">
             <b>{{ 'Ольга' }}</b>
             <div v-html='comment.text'></div>
@@ -11,11 +11,14 @@
                 </div>
             <CommentForm v-show='!comment.showButtonAnswer' :parent_id='comment.id'></CommentForm>
         </div>
+        <Paginator :rows='2' :totalRecords='totalCountComments' @page="onPage($event)"></Paginator>
     </div>
 </template>
 <script>
 import Comment from '../models/Comment';
 import CommentForm from './CommentForm';
+
+const commentService = new Comment();
 
 export default {
     name: 'Comments',
@@ -24,20 +27,13 @@ export default {
         return {
             newId: window.newId,
             comments: [],
-            commentsChildren: []
+            commentsChildren: [],
+            commentsPage: 1,
+            totalCountComments: 0
         }
     },
     created: function () {
-        const commentService = new Comment();
-        commentService.get(this.newId).then(response => {
-            this.comments = response.data.comments;
-
-            for (let i = 0; i < this.comments.length; i++) {
-                this.comments[i].showButtonAnswer = true;
-            }
-
-            this.commentsChildren = response.data.commentsChildren;
-        });
+        this.updateComments()
     },
     methods: {
         commentAnswer: function (index) {
@@ -45,6 +41,22 @@ export default {
                 this.comments[i].showButtonAnswer = true;
             }
             this.comments[index].showButtonAnswer = false;
+        },
+        updateComments: function () {
+            commentService.get(this.newId, this.commentsPage).then(response => {
+                this.comments = response.data.comments;
+                this.totalCountComments = response.data.totalCount;
+
+                for (let i = 0; i < this.comments.length; i++) {
+                    this.comments[i].showButtonAnswer = true;
+                }
+
+                this.commentsChildren = response.data.commentsChildren;
+            });
+        },
+        onPage: function (event) {
+            this.commentsPage = event.page;
+            this.updateComments();
         }
     }
 }
