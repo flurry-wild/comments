@@ -1,9 +1,6 @@
 <template>
     <NewComponent></NewComponent>
-    <Panel class="mt-5" :pt="
-    {
-        title: {class:'font-semibold'}
-    }">
+    <Panel class="mt-5">
         <CommentForm></CommentForm>
         <Comments :key="$store.state.commentsKey"></Comments>
     </Panel>

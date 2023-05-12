@@ -34,9 +34,6 @@ export default {
                 if (response.data.status == 'success') {
                     this.$store.state.commentsKey += 1;
                 }
-            })
-            .catch((error) => {
-                //this.errors = error.response.data.errors;
             });
         }
     }

@@ -4,7 +4,7 @@
         <div v-for="(comment, index) in comments" class="pb-1">
             <b>{{ 'Ольга' }}</b>
             <div v-html='comment.text'></div>
-            <div @click="commentAnswer(index)" v-show='comment.showButtonAnswer'>Ответить</div>
+            <a @click="commentAnswer(index)" v-show='comment.showButtonAnswer'>Ответить</a>
                 <div v-for="commentChild in commentsChildren[comment.id]" class="p-5 pt-1 pb-0">
                     <b>{{ 'Ольга' }}</b>
                     <div v-html='commentChild.text'></div>
@@ -61,3 +61,9 @@ export default {
     }
 }
 </script>
+<style>
+.p-paginator.p-component {
+    display:flex;
+    justify-content: center;
+}
+</style>
