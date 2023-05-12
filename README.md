@@ -6,5 +6,5 @@
 <p><code>php artisan migrate</code></p>
 <p><code>npm run watch</code></p>
 
-<img src="Снимок экрана от 2023-05-11 19-13-03.png" width=600px>
+<img src="Снимок экрана от 2023-05-12 12-43-45.png" width=600px>
 
