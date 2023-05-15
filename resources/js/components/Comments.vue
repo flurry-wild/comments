@@ -55,7 +55,7 @@ export default {
             });
         },
         onPage: function (event) {
-            this.commentsPage = event.page;
+            this.commentsPage = event.page + 1;
             this.updateComments();
         }
     }

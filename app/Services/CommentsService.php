@@ -20,7 +20,7 @@ class CommentsService
 
     public function getComments($newId, $page)
     {
-        $offset = self::COUNT_RECORDS_ON_PAGE * $page - (self::COUNT_RECORDS_ON_PAGE - 1);
+        $offset = self::COUNT_RECORDS_ON_PAGE * $page - self::COUNT_RECORDS_ON_PAGE;
 
         $commentsQuery = $this->getCommentsQuery($newId)
             ->limit(self::COUNT_RECORDS_ON_PAGE)
