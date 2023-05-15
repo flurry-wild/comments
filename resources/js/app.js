@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 
 import App from './components/App.vue';
+import router from './router';
 import PrimeVue from 'primevue/config';
 
 import store from './store';
@@ -24,6 +25,7 @@ app.component('Button', Button);
 app.component('Paginator', Paginator);
 
 app.use(store);
+app.use(router);
 app.use(PrimeVue);
 
 app.mount("#app");
