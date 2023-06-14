@@ -21,16 +21,13 @@ class CreateCommentsTable extends Migration
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->timestamps();
 
-            /*$table->foreignId('new_id')->references('id')->on('news');
-            $table->foreignId('new_id')
-                ->constrained()
+            $table->foreign('new_id')->references('id')->on('news')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->foreignId('user_id')->references('id')->on('users');
-            $table->foreignId('user_id')
-                ->constrained()
+
+            $table->foreign('user_id')->references('id')->on('users')
                 ->onUpdate('cascade')
-                ->onDelete('cascade');*/
+                ->onDelete('cascade');
         });
     }
 
